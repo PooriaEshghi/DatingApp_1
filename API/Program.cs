@@ -1,25 +1,32 @@
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 
-internal class Program
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+builder.Services.AddDbContext<AppDbContext>(opt =>
 {
-    private static void Main(string[] args)
+    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
     {
-        var builder = WebApplication.CreateBuilder(args);
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
-        // Add services to the container.
+var app = builder.Build();
 
-        builder.Services.AddControllers();
-        builder.Services.AddDbContext<AppDbContext>(opt =>
-        {
-            opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-        });
+// Configure the HTTP request pipeline.
+app.UseCors("AllowAll");
 
-        var app = builder.Build();
+app.MapControllers();
 
-        // Configure the HTTP request pipeline.
-        app.MapControllers();
-
-        app.Run();
-    }
-}
+app.Run();
