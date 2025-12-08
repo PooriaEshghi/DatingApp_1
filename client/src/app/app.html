@@ -1,0 +1,27 @@
+<div class="card bg-base-100 w-1/2 pt-10 mt-10 shadow-xl">
+
+
+  <h1 class="text-3xl text-red-500">{{title()}}</h1>
+  <ul>
+    @for(member of members(); track member.id){
+    <li>
+      <div class="card bg-base-100 w-96 shadow-sm">
+        <figure>
+          <img src="/user.png" alt="Shoes" />
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title"></h2>
+          <p>{{member.displayName}}</p>
+          <p>{{member.email}}</p>
+
+        </div>
+      </div>
+    </li>
+    }
+  </ul>
+  <div class="bg-blue-500 text-white p-8 rounded-lg text-center text-3xl font-bold">
+    Hello Tailwind in Angular!
+  </div>
+</div>
+
+<router-outlet></router-outlet>
